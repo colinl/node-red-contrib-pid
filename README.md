@@ -19,7 +19,7 @@ Pass the node a process value in **msg.payload** at regular intervals and config
     
 Any message received with a **msg.topic** other than those defined below is assumed to contain the current process value in **msg.payload** and the control algorithm will be run, passing on the required power in **msg.payload**.
 
-A sample flow demonstrating usage is available at http://flows.nodered.org/flow/42f125b56a00dd5d1433c2f8023263e9]
+A sample flow demonstrating usage is available at http://flows.nodered.org/flow/42f125b56a00dd5d1433c2f8023263e9
 
 
 Configuration
@@ -35,7 +35,7 @@ Configuration
 
   * **Initial integral** - This is an initial value which is used to preset the integrated error value when the flow is deployed in order to assist in homing in on the setpoint the first time. It should be set to an estimate of what the power requirement might be in order to maintain the process at the setpoint. For example for a domestic room heating application it might be set to 0.2 indicating that 20% of the available power might be required to maintain the setpoint.  The value is of no consequence apart from on deployment of the flow.
 
-  * **Max sample interval** - This is the maximum time in seconds that is expected between samples. It is provided to cope with unusual situations such as a faulty sensor that might prevent the node from being supplied with a process value and to prevent the problem of integral wind-up during that time. Each time a process value is received a check is made on the time since the last sample and if too long has elapsed the integral error term is locked at the previous value and the derivative is set to zero. It may be setup either in the configuration of the node or by passing the node a message with **msg.topic** set to `max_interval` and **msg.payload** set to the required integer value.
+  * **Max sample interval** - This is the maximum time in seconds that is expected between samples. It is provided to cope with unusual situations such as a faulty sensor that might prevent the node from being supplied with a process value and to prevent the problem of integral wind-up during that time. Each time a process value is received a check is made on the time since the last sample and if too long has elapsed the integral error term is locked at the previous value and the derivative component is set to zero. It may be setup either in the configuration of the node or by passing the node a message with **msg.topic** set to `max_interval` and **msg.payload** set to the required integer value.
 
   * **Derivative smoothing factor** - In situations where the process sensor has limited resolution (such as the DS18B20), the use of deriviative can be problematic as when the process is changing only slowly the steps in the value cause spikes in the derivative. To reduce the effect of these this parameter can be set to apply a filter to the derivative term.  I have found that with the DS18B20 that a value of 3 here can be beneficial, providing effectively a low pass filter on the derivative at 1/3 of the derivative time. This feature may also be useful if the process value is particularly noisy. The smaller the value the greater the filtering effect but the more it will reduce the effectiveness of the derivative. A value of zero disables this feature. It may be setup either in the configuration of the node or by passing the node a message with **msg.topic** set to `smooth_factor` and **msg.payload** set to the required value.
 
