@@ -19,7 +19,7 @@ Pass the node a process value in **msg.payload** at regular intervals and config
     
 Any message received with a **msg.topic** other than those defined below is assumed to contain the current process value in **msg.payload** and the control algorithm will be run, passing on the required power in **msg.payload**.
 
-The properties below can also be set using **msg.---**. For example, to change **setpoint** you can modify **msg.setpoint** in the message.
+The properties below can also be set using **msg.---**. For example, to change setpoint you can set the message attribute **msg.setpoint** to the required value. Using this method, it is possible to set multiple PID properties at the same time.
 
 A sample flow demonstrating usage is available at http://flows.nodered.org/flow/42f125b56a00dd5d1433c2f8023263e9
 
@@ -44,10 +44,7 @@ Configuration
   * **Enable state** - This is can be used to enable or disable the control (1=enable, 0=disable). When disabled the output is set the value defined in the parameter below. Enable/disable may be setup either in the configuration of the node or by passing the node a message with **msg.topic** set to `enable` and **msg.payload** set to 1/0 or true/false.
 
   * **Output power when disabled** - This is the value the output is set to when the loop is disabled. It may be setup either in the configuration of the node or by passing the node a message with **msg.topic** set to `disabled_op` and **msg.payload** set to the required floating point value between 0 and 1.
-  
-  * **Bias** - This value will set the bias to which the output is set, between 0 and 1. When set to 0.5, the output will be at 50% when the error is 0.
-
-  
+    
 Status
 ------
 
