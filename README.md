@@ -44,6 +44,8 @@ Configuration
   * **Enable state** - This is can be used to enable or disable the control (1=enable, 0=disable). When disabled the output is set the value defined in the parameter below. Enable/disable may be setup either in the configuration of the node or by passing the node a message with **msg.topic** set to `enable` and **msg.payload** set to 1/0 or true/false.
 
   * **Output power when disabled** - This is the value the output is set to when the loop is disabled. It may be setup either in the configuration of the node or by passing the node a message with **msg.topic** set to `disabled_op` and **msg.payload** set to the required floating point value between 0 and 1.
+  
+  * **Bias** - This value will set the bias to which the output is set, between 0 and 1. When set to 0.5, the output will be at 50% when the error is 0.
 
   
 Status
