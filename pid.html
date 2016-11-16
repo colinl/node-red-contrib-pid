@@ -28,7 +28,8 @@
             smooth_factor: {value: 3, required: true},
             max_interval: {value: 600, required: true},   // seconds
             enable: {value: 1, required: true},
-            disabled_op: {value: 0}
+            disabled_op: {value: 0},
+            bias: {value: 0.5}
         },
         inputs:1,
         outputs:1,
@@ -80,6 +81,11 @@
         <label for="node-input-disabled_op"><i class="icon-tag"></i> Output Power when disabled</label>
         <input type="text" id="node-input-disabled_op" placeholder=" Disabled Output">
     </div>
+    <div class="form-row">
+        <label for="node-input-bias"><i class="icon-tag"></i> Controller bias</label>
+        <input type="text" id="node-input-bias" placeholder=" Bias">
+    </div>
+
 </script>
 
 <script type="text/x-red" data-help-name="PID">
