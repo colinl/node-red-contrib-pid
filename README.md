@@ -19,7 +19,7 @@ Pass the node a process value in **msg.payload** at regular intervals and config
     
 Any message received with a **msg.topic** other than those defined below is assumed to contain the current process value in **msg.payload** and the control algorithm will be run, passing on the required power in **msg.payload**.
 
-The properties below can also be set using **msg.---**. For example, to change setpoint you can set the message attribute **msg.setpoint** to the required value. Using this method, it is possible to set multiple PID properties at the same time.
+The properties below can also be set using **msg.---**. For example, to change setpoint you can set the message attribute **msg.setpoint** to the required value. Using this method, it is possible to set multiple PID properties using the same message.
 
 A sample flow demonstrating usage is available at http://flows.nodered.org/flow/42f125b56a00dd5d1433c2f8023263e9
 
