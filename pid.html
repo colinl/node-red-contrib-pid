@@ -80,7 +80,6 @@
         <label for="node-input-disabled_op"><i class="icon-tag"></i> Output Power when disabled</label>
         <input type="text" id="node-input-disabled_op" placeholder=" Disabled Output">
     </div>
-
 </script>
 
 <script type="text/x-red" data-help-name="PID">
@@ -90,14 +89,14 @@
     
     <p>Any message received with a <b>msg.topic</b> other than those defined below is assumed to contain the current process value in <b>msg.payload</b> and the control algorithm will be run, passing on the required power in <b>msg.payload</b>.</p>
     
-    <p>Any message received with a <b>msg."name of PID property"</b> will change the associated PID property. For example setting <b>msg.setpoint</b> will change the setpoint of the PID controller. Multiple PID properties can be changed in the same message using this method.
+    <p>Any message received with an attribute <b>msg.&lt;property_name&gt;</b> set will change the value of the associated property to the value of that attribute. For example setting <b>msg.setpoint</b> will change the setpoint. Multiple properties can be changed in the same message using this method. Note that messages of this type should still have the process value in <b>msg.payload</b>
     
     <p>The configuration parameters are as follows:</p>
     <ul>
     
       <li><b>Setpoint</b> - This is the process value that the process is aiming for. It may be setup either in the configuration of the node, by passing the node a message with <b>msg.topic</b> set to <code>setpoint</code> and <b>msg.payload</b> set to the required floating point value, or by passing the value in <b>msg.setpoint</b>.</li>
       
-      <li><b>Proportional band</b> - This controls the gain of the loop and is the range of process value over which the power output will go from 0 to full power. The units are that of the process and setpoint, so for example in a heating application it might be set to 1.5 degrees. It may be setup in configuration of the node, by passing the node a message with <b>msg.topic</b> set to <code>prop_band</code> and <b>msg.payload</b> set to the required floating point value, or py passing the valye in <b>msg.prop_band</b>.</li>
+      <li><b>Proportional band</b> - This controls the gain of the loop and is the range of process value over which the power output will go from 0 to full power. The units are that of the process and setpoint, so for example in a heating application it might be set to 1.5 degrees. It may be setup in configuration of the node, by passing the node a message with <b>msg.topic</b> set to <code>prop_band</code> and <b>msg.payload</b> set to the required floating point value, or py passing the value in <b>msg.prop_band</b>.</li>
       
       <li><b>Integral time</b> - This is a setting for the integral time, in seconds. It represents the time constant of the integration effect. The larger the value the slower the integral effect will be. Obviously the slower the process is the larger this should be. For example for a domestic room heated by convection radiators a setting of one or two hours might be appropriate (in seconds). To disable the integral effect set this to a large number. It may be setup in the configuration of the node, by passing the node a message with <b>msg.topic</b> set to <code>t_integral</code> and <b>msg.payload</b> set to the required integer value, or by passing the value in <b>msg.t_integral</b>.</li>
       
