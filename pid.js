@@ -29,9 +29,36 @@ module.exports = function(RED) {
     node.smooth_factor = Number(config.smooth_factor);
     node.max_interval = Number(config.max_interval);
     node.disabled_op = Number(config.disabled_op);
-   
+    
     this.on('input', function(msg) {
       var newMsg = null;
+      
+      // Using msg.* to change specific PID property.
+      if (msg.hasOwnProperty('setpoint')) {
+        node.setpoint = Number(msg.setpoint);
+      }
+      if (msg.hasOwnProperty('enable')) {
+        node.enable = Number(msg.enable);
+      }
+      if (msg.hasOwnProperty('prop_band')) {
+        node.prop_band = Number(msg.prop_band);
+      }
+      if (msg.hasOwnProperty('t_integral')) {
+        node.t_integral = Number(msg.t_integral);
+      }
+      if (msg.hasOwnProperty('t_derivative')) {
+        node.t_derivative = Number(msg.t_derivative);
+      }
+      if (msg.hasOwnProperty('smooth_factor')) {
+        node.smooth_factor = Number(msg.smooth_factor);
+      }
+      if (msg.hasOwnProperty('max_interval')) {
+        node.max_interval = Number(msg.max_interval);
+      }
+      if (msg.hasOwnProperty('disabled_op')) {
+        node.disabled_op = Number(msg.disabled_op);
+      }
+      
       if (msg.topic == 'setpoint') {
         node.setpoint = Number(msg.payload);
       } else if (msg.topic == 'enable') {
@@ -118,7 +145,7 @@ module.exports = function(RED) {
         }
         
         var proportional = node.pv - node.setpoint;
-        var power = -1.0/node.prop_band * (proportional + node.integral + node.derivative) + 0.5
+        var power = -1.0/node.prop_band * (proportional + node.integral + node.derivative) + 0.5;
         if (power < 0.0) {
           power = 0.0;
         } else if (power > 1.0) {
