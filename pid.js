@@ -105,7 +105,7 @@ module.exports = function(RED) {
             if (node.smooth_factor > 0) {
               // A derivative smoothing factor has been supplied
               // smoothing time constant is td/factor but with a min of delta_t to stop overflows
-              ts = Math.max(node.t_derivative/node.smooth_factor, delta_t);
+              var ts = Math.max(node.t_derivative/node.smooth_factor, delta_t);
               factor = 1.0/(ts/delta_t);
             } else {
               // no integral smoothing so factor is 1, this makes smoothed_value the previous pv

@@ -1,7 +1,7 @@
 node-red-contrib-pid
 =====================
 
-A [Node-RED] node which operates as a PID loop controller node intended for the control of real world processes..
+A [Node-RED] node which operates as a PID loop controller node intended for the control of real world processes.
 
 
 Install
