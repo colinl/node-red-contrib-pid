@@ -58,6 +58,9 @@ module.exports = function(RED) {
       if (msg.hasOwnProperty('disabled_op')) {
         node.disabled_op = Number(msg.disabled_op);
       }
+      if (msg.hasOwnProperty('integral_default')){
+        node.integral_default = Number(msg.integral_default);
+      }
       
       if (msg.topic == 'setpoint') {
         node.setpoint = Number(msg.payload);
@@ -75,6 +78,8 @@ module.exports = function(RED) {
         node.max_interval = Number(msg.payload);
       } else if (msg.topic == 'disabled_op') {
         node.disabled_op = Number(msg.payload);
+      } else if (msg.topic == 'integral_default') {
+        node.integral_default = Number(msg.payload);
       } else {
         // anything else is assumed to be a process value
         node.pv = Number(msg.payload);   // this may give NaN which is handled in runControlLoop
