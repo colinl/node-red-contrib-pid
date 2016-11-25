@@ -61,7 +61,6 @@ module.exports = function(RED) {
       if (msg.hasOwnProperty('integral_default')){
         node.integral_default = Number(msg.integral_default);
       }
-      
       if (msg.topic == 'setpoint') {
         node.setpoint = Number(msg.payload);
       } else if (msg.topic == 'enable') {
@@ -145,7 +144,8 @@ module.exports = function(RED) {
         } else {
             // first time through so initialise context data
             node.smoothed_value = node.pv;
-            node.integral = node.integral_default;
+            // setup the integral term so that the power out would be integral_default if pv=setpoint
+            node.integral = (0.5 - node.integral_default)*node.prop_band;
             node.derivative = 0.0;
         }
         
