@@ -21,8 +21,12 @@ Any message received with a **msg.topic** other than those defined below is assu
 
 The properties below can also be set using **msg.---**. For example, to change the setpoint you can set the message attribute **msg.setpoint** to the required value. Using this method, it is possible to set multiple PID properties using the same message. When using this method to set the properties **msg.payload** should contain the process value.
 
+Example and Tuning Guide
+------------------------
+
 A sample flow demonstrating usage is available at http://flows.nodered.org/flow/42f125b56a00dd5d1433c2f8023263e9
 
+A tuning guide that walks through a simple tuning procedure using the above flow is available at http://blog.clanlaw.org.uk/2018/01/09/PID-tuning-with-node-red-contrib-pid.html
 
 Configuration
 -------------
@@ -58,6 +62,13 @@ The status text will normally be empty. In unusual conditions it will show the f
   * **Bad PV** - The process value passed in is not a number.
   
   * **Too long since last sample** - A long time has elapsed since the last good sample so the integral term will not be accumulated for this sample.
+  
+Usage with a cooling process
+----------------------------
+
+If the process is a cooling process so that when power is applied to the process the process value decreases rather than increases this can be dealt with very easily by passing the output from the node to a Range node configured to convert the range 0:1 to 1:0.
+
+Alternatively if a node-red-contrib-timeprop node is used to generate a time proportioned signal then it is merely necessary to flip the state of the Invert checkbox to achieve the same result.
 
 
 [Node-RED]:  http://nodered.org/
