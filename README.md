@@ -70,6 +70,11 @@ If the process is a cooling process so that when power is applied to the process
 
 Alternatively if a node-red-contrib-timeprop node is used to generate a time proportioned signal then it is merely necessary to flip the state of the Invert checkbox to achieve the same result.
 
+Usage with a heat/cool process
+------------------------------
+
+If the process has both heating and cooling devices then it is necessary to split the output of node-red-contrib-pid to provide a heat output and a cool output. There is a sample flow that demonstrates this at https://flows.nodered.org/flow/4271d6617c89544ad318e7ab17211ba0  This allows for independent adjustment of heat/cool gain and also for heat/cool overlap if required. 
+
 
 [Node-RED]:  http://nodered.org/
 
