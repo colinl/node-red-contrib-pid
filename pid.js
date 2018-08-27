@@ -128,12 +128,18 @@ module.exports = function(RED) {
             var pbo2 = node.prop_band/2.0;
             if ((Math.abs(error + node.integral) < pbo2)  && node.enable) {
               integral_locked = false;
-              node.integral = node.integral + error * delta_t/node.t_integral;
-              // clamp to +- 0.5 prop band widths so that it cannot push the zero power point outside the pb
-              if ( node.integral < -pbo2 ) {
-                node.integral = -pbo2;
-              } else if (node.integral > pbo2) {
-                node.integral = pbo2;
+              if (node.t_integral <= 0) {
+                // t_integral is zero (or silly), set integral to one end or the other
+                // or half way if exactly on sp
+                node.integral = Math.sign(error) * pbo2;
+              } else {
+                node.integral = node.integral + error * delta_t/node.t_integral;
+                // clamp to +- 0.5 prop band widths so that it cannot push the zero power point outside the pb
+                if ( node.integral < -pbo2 ) {
+                  node.integral = -pbo2;
+                } else if (node.integral > pbo2) {
+                  node.integral = pbo2;
+                }
               }
             } else {
               //node.log("Locking integral");
@@ -147,10 +153,23 @@ module.exports = function(RED) {
             // setup the integral term so that the power out would be integral_default if pv=setpoint
             node.integral = (0.5 - node.integral_default)*node.prop_band;
             node.derivative = 0.0;
+            node.last_power = 0.0;  // power last time through
         }
         
         var proportional = node.pv - node.setpoint;
-        var power = -1.0/node.prop_band * (proportional + node.integral + node.derivative) + 0.5;
+        if (node.prop_band == 0) {
+          // prop band is zero so drop back to on/off control with zero hysteresis
+          if (proportional > 0) {
+            power = 0.0;
+          } else if (proportional < 0) {
+            power = 1.0;
+          } else {
+            // exactly on sp so leave power as it was last time round
+            power = node.last_power;
+          }
+        } else {
+          var power = -1.0/node.prop_band * (proportional + node.integral + node.derivative) + 0.5;
+        }
         if (power < 0.0) {
           power = 0.0;
         } else if (power > 1.0) {
@@ -171,6 +190,7 @@ module.exports = function(RED) {
         power = node.disabled_op;
         node.status({fill:"red",shape:"dot",text:"Bad PV"});
       }
+      node.last_power = power;
       ans =  {payload: power, pv: node.pv, setpoint: node.setpoint, proportional: proportional, integral: node.integral, 
         derivative: node.derivative, smoothed_value: node.smoothed_value}
       return ans;
