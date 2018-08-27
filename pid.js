@@ -29,6 +29,10 @@ module.exports = function(RED) {
     node.smooth_factor = Number(config.smooth_factor);
     node.max_interval = Number(config.max_interval);
     node.disabled_op = Number(config.disabled_op);
+    // sanitise disabled output as this is used when all else fails
+    if (isNaN(node.disabled_op)) {
+        node.disabled_op = 0;
+    }
     
     this.on('input', function(msg) {
       var newMsg = null;
@@ -57,6 +61,10 @@ module.exports = function(RED) {
       }
       if (msg.hasOwnProperty('disabled_op')) {
         node.disabled_op = Number(msg.disabled_op);
+        // sanitise disabled output as this is used when all else fails
+        if (isNaN(node.disabled_op)) {
+            node.disabled_op = 0;
+        }
       }
       if (msg.hasOwnProperty('integral_default')){
         node.integral_default = Number(msg.integral_default);
@@ -77,6 +85,10 @@ module.exports = function(RED) {
         node.max_interval = Number(msg.payload);
       } else if (msg.topic == 'disabled_op') {
         node.disabled_op = Number(msg.payload);
+        // sanitise disabled output as this is used when all else fails
+        if (isNaN(node.disabled_op)) {
+            node.disabled_op = 0;
+        }
       } else if (msg.topic == 'integral_default') {
         node.integral_default = Number(msg.payload);
       } else {
@@ -170,11 +182,6 @@ module.exports = function(RED) {
         } else {
           var power = -1.0/node.prop_band * (proportional + node.integral + node.derivative) + 0.5;
         }
-        if (power < 0.0) {
-          power = 0.0;
-        } else if (power > 1.0) {
-          power = 1.0;
-        }
         // set power to disabled value if the loop is not enabled
         if (!node.enable) {
           power = node.disabled_op;
@@ -189,6 +196,16 @@ module.exports = function(RED) {
         // pv is not a good number so set power to disabled value
         power = node.disabled_op;
         node.status({fill:"red",shape:"dot",text:"Bad PV"});
+      }
+      // if NaN vaues have been entered fo params or something drastic has gone wrong
+      // then set power to disabled value
+      if (isNaN(power)) {
+        power = node.disabled_op;
+      }
+      if (power < 0.0) {
+        power = 0.0;
+      } else if (power > 1.0) {
+        power = 1.0;
       }
       node.last_power = power;
       ans =  {payload: power, pv: node.pv, setpoint: node.setpoint, proportional: proportional, integral: node.integral, 
