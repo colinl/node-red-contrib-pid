@@ -146,16 +146,17 @@ module.exports = function(RED) {
                 node.integral = Math.sign(error) * pbo2;
               } else {
                 node.integral = node.integral + error * delta_t/node.t_integral;
-                // clamp to +- 0.5 prop band widths so that it cannot push the zero power point outside the pb
-                if ( node.integral < -pbo2 ) {
-                  node.integral = -pbo2;
-                } else if (node.integral > pbo2) {
-                  node.integral = pbo2;
-                }
               }
             } else {
               //node.log("Locking integral");
               integral_locked = true;
+            }
+            // clamp to +- 0.5 prop band widths so that it cannot push the zero power point outside the pb
+            // do this here rather than when integral is updated to allow for the fact that the pb may change dynamically
+            if ( node.integral < -pbo2 ) {
+              node.integral = -pbo2;
+            } else if (node.integral > pbo2) {
+              node.integral = pbo2;
             }
           }
             
