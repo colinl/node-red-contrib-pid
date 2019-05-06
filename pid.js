@@ -72,7 +72,16 @@ module.exports = function(RED) {
       if (msg.topic == 'setpoint') {
         node.setpoint = Number(msg.payload);
       } else if (msg.topic == 'enable') {
+        var wasEnabled = node.enable;
         node.enable = Number(msg.payload);
+        // if now enabled just clear the status, can't do more until a pv sample is received
+        if (node.enable  &&  !wasEnabled) {
+          node.status({});
+        } else if (wasEnabled && !node.enable) {
+          // now disabled, force the power to the disabled value immediately
+          newMsg = {payload: node.disabled_op};
+          node.status({fill:"yellow",shape:"dot",text:"Disabled"});
+        }
       } else if (msg.topic == 'prop_band') {
         node.prop_band = Number(msg.payload);
       } else if (msg.topic == 't_integral') {
@@ -198,7 +207,7 @@ module.exports = function(RED) {
         power = node.disabled_op;
         node.status({fill:"red",shape:"dot",text:"Bad PV"});
       }
-      // if NaN vaues have been entered fo params or something drastic has gone wrong
+      // if NaN vaues have been entered for params or something drastic has gone wrong
       // then set power to disabled value
       if (isNaN(power)) {
         power = node.disabled_op;
