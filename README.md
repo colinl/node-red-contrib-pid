@@ -26,7 +26,8 @@ Example and Tuning Guide
 
 A sample flow demonstrating usage is available at http://flows.nodered.org/flow/42f125b56a00dd5d1433c2f8023263e9
 
-A tuning guide that walks through a simple tuning procedure using the above flow is available at http://blog.clanlaw.org.uk/2018/01/09/PID-tuning-with-node-red-contrib-pid.html
+A tuning guide that walks through a simple tuning procedure using the above flow is available at
+http://blog.clanlaw.org.uk/pid-loop-tuning.html
 
 Configuration
 -------------
