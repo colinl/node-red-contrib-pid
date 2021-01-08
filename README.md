@@ -50,10 +50,6 @@ Configuration
 
   * **Output power when disabled** - This is the value the output is set to when the loop is disabled. It may be setup either in the configuration of the node or by passing the node a message with **msg.topic** set to `disabled_op` and **msg.payload** set to the required floating point value between 0 and 1.
 
-Persistence
------------
-In order to reduce the impact of restarts or redeploys, you can save the integral value in a persistent storage location and feed it back into the node as it starts. The integral value is available in `msg.integral` in the output message, and in order to feed it back in, you'll need to supply the steady state power output to the `integral_default` setting. The steady state power output is given by the following formula: `-(cached_integral/prop_band) + 0.5`
-  
 Status
 ------
 
@@ -66,6 +62,10 @@ The status text will normally be empty. In unusual conditions it will show the f
   * **Bad PV** - The process value passed in is not a number.
   
   * **Too long since last sample** - A long time has elapsed since the last good sample so the integral term will not be accumulated for this sample.
+  
+Persistence
+-----------
+In order to reduce the impact of restarts or redeploys, you can save the integral value in a persistent storage location and feed it back in to the node as it starts. The integral value is available in `msg.integral` in the output messages. In order to feed it back in set the `integral_default` value to `0.5 -(cached_integral/prop_band)` before the first process value is passed in.
   
 Usage with a cooling process
 ----------------------------

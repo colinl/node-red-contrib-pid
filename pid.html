@@ -113,16 +113,17 @@
       <li><b>Output power when disabled</b> - This is the value the output is set to when the loop is disabled. It may be setup in the configuration of the node, by passing the node a message with <b>msg.topic</b> set to <code>disabled_op</code> and <b>msg.payload</b> set to the required floating point value between 0 and 1,  or by passing the value in <b>msg.disabled_op</b>.</li>
 
     </ul>
-    
-    <p><b>Persistence</b></p>
-    <p>In order to reduce the impact of restarts or redeploys, you can save the integral value in a persistent storage location and feed it back into the node as it starts. The integral value is available in <code>msg.integral</code> in the output message, and in order to feed it back in, you'll need to supply the steady state power output to the <code>integral_default</code> setting. The steady state power output is given by the following formula: <code>-(cached_integral/prop_band) + 0.5</code></p>
-    
-    <p><b>Status</b> - The status text will normally be empty. In unusual conditions it will show the following values.</p>
+ 
+    <p><b>Status</b></p>
+    <p>The status text will normally be empty. In unusual conditions it will show the following values.</p>
     <ul>
       <li><b>Disabled</b> - Control is currently disabled.</li>
       <li><b>Integral Locked</b> - The process is far from the setpoint and the integral term has been locked to prevent integral windup.</li>
       <li><b>Bad PV</b> - The process value passed in is not a number.</li>
       <li><b>Too long since last sample</b> - A long time has elapsed since the last good sample so the integral term will not be accumulated for this sample.</li>
     </ul>
+    
+    <p><b>Persistence</b></p>
+    <p>In order to reduce the impact of restarts or redeploys, you can save the integral value in a persistent storage location and feed it back in to the node as it starts. The integral value is available in <code>msg.integral</code> in the output messages. In order to feed it back in set the <code>integral_default</code> setting to <code>0.5 - (cached_integral/prop_band)</code> before the first process value is passed in.</p>
     
 </script>
