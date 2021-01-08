@@ -50,6 +50,9 @@ Configuration
 
   * **Output power when disabled** - This is the value the output is set to when the loop is disabled. It may be setup either in the configuration of the node or by passing the node a message with **msg.topic** set to `disabled_op` and **msg.payload** set to the required floating point value between 0 and 1.
 
+Persistence
+-----------
+In order to reduce the impact of restarts or redeploys, you can save the integral value in a persistent storage location and feed it back into the node as it starts. In order to do so, you'll need to supply the steady state power output to the `integral_default` setting. The steady state power output is given by the following formula: `-(cached_integral/prop_band) + 0.5`
   
 Status
 ------
