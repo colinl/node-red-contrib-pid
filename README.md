@@ -52,7 +52,7 @@ Configuration
 
 Persistence
 -----------
-In order to reduce the impact of restarts or redeploys, you can save the integral value in a persistent storage location and feed it back into the node as it starts. In order to do so, you'll need to supply the steady state power output to the `integral_default` setting. The steady state power output is given by the following formula: `-(cached_integral/prop_band) + 0.5`
+In order to reduce the impact of restarts or redeploys, you can save the integral value in a persistent storage location and feed it back into the node as it starts. The integral value is available in `msg.integral` in the output message, and in order to feed it back in, you'll need to supply the steady state power output to the `integral_default` setting. The steady state power output is given by the following formula: `-(cached_integral/prop_band) + 0.5`
   
 Status
 ------
