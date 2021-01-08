@@ -114,6 +114,9 @@
 
     </ul>
     
+    <p><b>Persistence</b></p>
+    <p>In order to reduce the impact of restarts or redeploys, you can save the integral value in a persistent storage location and feed it back into the node as it starts. The integral value is available in <code>msg.integral</code> in the output message, and in order to feed it back in, you'll need to supply the steady state power output to the <code>integral_default</code> setting. The steady state power output is given by the following formula: <code>-(cached_integral/prop_band) + 0.5</code></p>
+    
     <p><b>Status</b> - The status text will normally be empty. In unusual conditions it will show the following values.</p>
     <ul>
       <li><b>Disabled</b> - Control is currently disabled.</li>
