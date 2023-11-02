@@ -1,6 +1,8 @@
 node-red-contrib-pid
 =====================
 
+## Fork to pass message properties not known by the node through ##
+
 A [Node-RED] node which operates as a PID loop controller node intended for the control of real world processes.
 
 
