@@ -15,7 +15,7 @@
 -->
 
 <script type="text/javascript">
-    RED.nodes.registerType('PID', {
+    RED.nodes.registerType('PIDMSG', {
         category: 'function',
         color: '#a6bbcf',
         defaults: {
@@ -35,12 +35,12 @@
         outputs: 1,
         icon: "function.png",
         label: function () {
-            return this.name || "PID";
+            return this.name || "PIDMSG";
         }
     });
 </script>
 
-<script type="text/x-red" data-template-name="PID">
+<script type="text/x-red" data-template-name="PIDMSG">
     <div class="form-row">
         <label for="node-input-name"><i class="icon-tag"></i> Name</label>
         <input type="text" id="node-input-name" placeholder="Name">
@@ -87,7 +87,7 @@
 
 </script>
 
-<script type="text/x-red" data-help-name="PID">
+<script type="text/x-red" data-help-name="PIDMSG">
     <p>A PID loop controller node intended for the control of real world processes.</p>
     
     <p>The node is regularly given a process value and is configured (or given) a setpoint and tuning parameters and generates a required power output between 0 and 1 in <b>msg.payload</b> using a Proportional+Integral+Derivative algorithm.</p>

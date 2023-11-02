@@ -231,7 +231,7 @@ module.exports = function (RED) {
       return ans;
     }
   }
-  RED.nodes.registerType("PID", PID);
+  RED.nodes.registerType("PIDMSG", PID);
 }
 
 

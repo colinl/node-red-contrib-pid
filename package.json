@@ -1,6 +1,6 @@
 {
     "name"         : "node-red-contrib-pid",
-    "version"      : "1.1.7",
+    "version"      : "1.1.7-passmsg",
     "description"  : "PID loop controller for Node-RED",
     "homepage"     : "https://github.com/colinl/node-red-contrib-pid",
     "license"      : "Apache-2.0",
@@ -13,7 +13,7 @@
     "keywords": [ "PID", "node-red" ],
     "node-red": {
         "nodes": {
-            "PID": "pid.js"
+            "PIDMSG": "pid.js"
         }
     },
     "bugs": {
