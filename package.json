@@ -13,7 +13,7 @@
     "keywords": [ "PID", "node-red" ],
     "node-red": {
         "nodes": {
-            "PIDMSG": "pid.js"
+            "PID": "pid.js"
         }
     },
     "bugs": {
