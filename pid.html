@@ -15,26 +15,27 @@
 -->
 
 <script type="text/javascript">
-    RED.nodes.registerType('PID',{
+    RED.nodes.registerType('PID', {
         category: 'function',
         color: '#a6bbcf',
         defaults: {
-            name: {value:""},
-            setpoint: {value: 21.0},
-            pb: {value: 1, required: true},
-            ti: {value: 9999, required: true},
-            td: {value: 0, required: true},
-            integral_default: {value: 0.5},
-            smooth_factor: {value: 3, required: true},
-            max_interval: {value: 600, required: true},   // seconds
-            enable: {value: 1, required: true},
-            disabled_op: {value: 0}
+            name: { value: "" },
+            setpoint: { value: 21.0 },
+            pb: { value: 1, required: true },
+            ti: { value: 9999, required: true },
+            td: { value: 0, required: true },
+            integral_default: { value: 0.5 },
+            smooth_factor: { value: 3, required: true },
+            max_interval: { value: 600, required: true },   // seconds
+            enable: { value: 1, required: true },
+            disabled_op: { value: 0 },
+            preserve_msg: { value: 1 }
         },
-        inputs:1,
-        outputs:1,
+        inputs: 1,
+        outputs: 1,
         icon: "function.png",
-        label: function() {
-            return this.name||"PID";
+        label: function () {
+            return this.name || "PID";
         }
     });
 </script>
@@ -80,6 +81,10 @@
         <label for="node-input-disabled_op"><i class="icon-tag"></i> Output Power when disabled</label>
         <input type="text" id="node-input-disabled_op" placeholder=" Disabled Output">
     </div>
+    <div class="form-row">
+        <label for="node-input-preserve_msg"><i class="icon-tag">Preserve original message properties (0 -disable 1 - enable)</label>
+        <input type="text" id="node-input-preserve_msg" placeholder=" Preserve message">
+
 </script>
 
 <script type="text/x-red" data-help-name="PID">
@@ -111,6 +116,8 @@
       <li><b>Enable state</b> - This is can be used to enable or disable the control (1=enable, 0=disable). When disabled the output is set the value defined in the parameter below. Enable/disable may be setup in the configuration of the node, by passing the node a message with <b>msg.topic</b> set to <code>enable</code> and <b>msg.payload</b> set to 1/0 or true/false, or by passing the value in <b>msg.enable</b>.</li>
       
       <li><b>Output power when disabled</b> - This is the value the output is set to when the loop is disabled. It may be setup in the configuration of the node, by passing the node a message with <b>msg.topic</b> set to <code>disabled_op</code> and <b>msg.payload</b> set to the required floating point value between 0 and 1,  or by passing the value in <b>msg.disabled_op</b>.</li>
+      
+      <li><b>Preserve original message</b> - retain the properties of original message which were not overriden by. Not configurable via incoming message.</li>
 
     </ul>
  
