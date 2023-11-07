@@ -29,6 +29,7 @@ module.exports = function(RED) {
     node.smooth_factor = Number(config.smooth_factor);
     node.max_interval = Number(config.max_interval);
     node.disabled_op = Number(config.disabled_op);
+    node.preserve_msg = Number(config.preserve_msg);
     // sanitise disabled output as this is used when all else fails
     if (isNaN(node.disabled_op)) {
         node.disabled_op = 0;
@@ -105,6 +106,13 @@ module.exports = function(RED) {
         node.pv = Number(msg.payload);   // this may give NaN which is handled in runControlLoop
         newMsg = runControlLoop();
       }
+      if (node.preserve_msg) {
+        for (var attrname in msg) {
+          if (! newMsg.hasOwnProperty(attrname) ) {
+            newMsg[attrname] = msg[attrname];
+            }
+      }
+    }
       node.send(newMsg);
     });
 

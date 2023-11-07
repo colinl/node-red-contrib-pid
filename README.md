@@ -50,6 +50,8 @@ Configuration
 
   * **Output power when disabled** - This is the value the output is set to when the loop is disabled. It may be setup either in the configuration of the node or by passing the node a message with **msg.topic** set to `disabled_op` and **msg.payload** set to the required floating point value between 0 and 1.
 
+  * **Preserve incoming message** - when enabled (set to 1) will preserve properties of incoming message which are not overwritten by the node.
+
 Status
 ------
 
