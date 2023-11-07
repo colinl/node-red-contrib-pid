@@ -10,8 +10,12 @@
     },
     "dependencies": {
     },
+    "engines": {
+        "node": ">=8.0.0"
+    },
     "keywords": [ "PID", "node-red" ],
     "node-red": {
+    	"version": ">=1.0.0",
         "nodes": {
             "PID": "pid.js"
         }
