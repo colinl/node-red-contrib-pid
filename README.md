@@ -21,6 +21,8 @@ Any message received with a **msg.topic** other than those defined below is assu
 
 The properties below can also be set using **msg.---**. For example, to change the setpoint you can set the message attribute **msg.setpoint** to the required value. Using this method, it is possible to set multiple PID properties using the same message. When using this method to set the properties **msg.payload** should contain the process value.
 
+Any other message properties will be passed through unchanged.
+
 Example and Tuning Guide
 ------------------------
 

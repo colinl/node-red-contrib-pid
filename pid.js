@@ -105,6 +105,14 @@ module.exports = function(RED) {
         node.pv = Number(msg.payload);   // this may give NaN which is handled in runControlLoop
         newMsg = runControlLoop();
       }
+      // if there is a message to send then merge in properties from old message as they should be preserved
+      if (newMsg) {
+        for (let attrname in msg) {
+          if (!newMsg.hasOwnProperty(attrname)) {
+            newMsg[attrname] = msg[attrname];
+          }
+        }
+      }
       node.send(newMsg);
     });
 

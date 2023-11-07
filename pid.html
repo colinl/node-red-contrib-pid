@@ -89,7 +89,9 @@
     
     <p>Any message received with a <b>msg.topic</b> other than those defined below is assumed to contain the current process value in <b>msg.payload</b> and the control algorithm will be run, passing on the required power in <b>msg.payload</b>.</p>
     
-    <p>Any message received with an attribute <b>msg.&lt;property_name&gt;</b> set will change the value of the associated property to the value of that attribute. For example setting <b>msg.setpoint</b> will change the setpoint. Multiple properties can be changed in the same message using this method. Note that messages of this type should still have the process value in <b>msg.payload</b>
+    <p>Any message received with an attribute <b>msg.&lt;property_name&gt;</b> set will change the value of the associated property to the value of that attribute. For example setting <b>msg.setpoint</b> will change the setpoint. Multiple properties can be changed in the same message using this method. Note that messages of this type should still have the process value in <b>msg.payload</b></p>
+    
+    <p>Any other message properties will be passed through unchanged.</p>
     
     <p>The configuration parameters are as follows:</p>
     <ul>
