@@ -1,6 +1,6 @@
 {
     "name"         : "node-red-contrib-pid",
-    "version"      : "1.1.7",
+    "version"      : "2.0.0",
     "description"  : "PID loop controller for Node-RED",
     "homepage"     : "https://github.com/colinl/node-red-contrib-pid",
     "license"      : "Apache-2.0",
