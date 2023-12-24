@@ -226,7 +226,19 @@ module.exports = function(RED) {
         power = 1.0;
       }
       node.last_power = power;
-      ans =  {payload: power, pv: node.pv, setpoint: node.setpoint, proportional: proportional, integral: node.integral, 
+      // debug code to output params
+      const params = {
+        setpoint: node.setpoint,
+        prop_band: node.prop_band,
+        t_integral: node.t_integral,
+        t_derivative: node.t_derivative,
+        integral_default: node.integral_default,
+        max_interval:node.max_interval,
+        smooth_factor: node.smooth_factor,
+        enable: node.enable,
+        disabled_op: node.disabled_op
+      }
+      ans =  {params: params, payload: power, pv: node.pv, setpoint: node.setpoint, proportional: proportional, integral: node.integral, 
         derivative: node.derivative, smoothed_value: node.smoothed_value}
       return ans;
     }
