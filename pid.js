@@ -29,6 +29,18 @@ module.exports = function(RED) {
     node.smooth_factor = Number(config.smooth_factor);
     node.max_interval = Number(config.max_interval);
     node.disabled_op = Number(config.disabled_op);
+    // debug remember values from config  *************88
+    node.configParams = {
+      setpoint: config.setpoint,
+      enable: config.enable,
+      pb: config.pb,
+      ti: config.ti,
+      td: config.td,
+      integral_default: config.integral_default,
+      smooth_factor: config.smooth_factor,
+      max_interval:config.max_interval,
+      disabled_op: config.disabled_op
+    }
     // sanitise disabled output as this is used when all else fails
     if (isNaN(node.disabled_op)) {
         node.disabled_op = 0;
@@ -238,7 +250,7 @@ module.exports = function(RED) {
         enable: node.enable,
         disabled_op: node.disabled_op
       }
-      ans =  {params: params, payload: power, pv: node.pv, setpoint: node.setpoint, proportional: proportional, integral: node.integral, 
+      ans =  { configParams: node.configParams, params: params, payload: power, pv: node.pv, setpoint: node.setpoint, proportional: proportional, integral: node.integral, 
         derivative: node.derivative, smoothed_value: node.smoothed_value}
       return ans;
     }
