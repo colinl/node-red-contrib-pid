@@ -69,6 +69,9 @@ module.exports = function(RED) {
       if (msg.hasOwnProperty('integral_default')){
         node.integral_default = Number(msg.integral_default);
       }
+      if (msg.hasOwnProperty('integral')) {
+        setIntegral(Number(msg.integral));
+      }
       if (msg.topic == 'setpoint') {
         node.setpoint = Number(msg.payload);
       } else if (msg.topic == 'enable') {
@@ -100,6 +103,8 @@ module.exports = function(RED) {
         }
       } else if (msg.topic == 'integral_default') {
         node.integral_default = Number(msg.payload);
+      } else if (msg.topic == 'integral') {
+        setIntegral(Number(msg.payload));
       } else {
         // anything else is assumed to be a process value
         node.pv = Number(msg.payload);   // this may give NaN which is handled in runControlLoop
@@ -115,6 +120,25 @@ module.exports = function(RED) {
       }
       node.send(newMsg);
     });
+
+    // Set the integral term directly.  The value is in the same units as the
+    // integral reported in the output message, so a value read from the output
+    // can be fed back in.  It is clamped to +-prop_band/2, as the integral is
+    // in the control loop, so that it cannot push the zero power point outside
+    // the proportional band.
+    // If this is called before the first process value has been received then
+    // the value is remembered and applied in place of integral_default when the
+    // loop initialises.
+    function setIntegral(value) {
+      if (isNaN(value)) {
+        return;
+      }
+      var pbo2 = node.prop_band/2.0;
+      if (value >  pbo2) value =  pbo2;
+      if (value < -pbo2) value = -pbo2;
+      node.integral = value;
+      node.integral_preset = true;
+    }
 
     function runControlLoop() {
       //node.log("pv, setpoint, prop_band, t_integral, t_derivative, integral_default, smooth_factor, max_interval, enable, disabled_op");
@@ -180,8 +204,10 @@ module.exports = function(RED) {
         } else {
             // first time through so initialise context data
             node.smoothed_value = node.pv;
-            // setup the integral term so that the power out would be integral_default if pv=setpoint
-            node.integral = (0.5 - node.integral_default)*node.prop_band;
+            if (!node.integral_preset) {
+              // setup the integral term so that the power out would be integral_default if pv=setpoint
+              node.integral = (0.5 - node.integral_default)*node.prop_band;
+            }
             node.derivative = 0.0;
             node.last_power = 0.0;  // power last time through
         }
