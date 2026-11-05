@@ -10,12 +10,18 @@
     },
     "dependencies": {
     },
+    "devDependencies": {
+        "mocha": "^11.7.5",
+        "node-red": "^4.1.0",
+        "node-red-node-test-helper": "^0.3.6",
+        "should": "^13.2.3"
+    },
     "engines": {
         "node": ">=8.0.0"
     },
     "keywords": [ "PID", "node-red" ],
     "scripts": {
-        "test": "node test/pid_spec.js"
+        "test": "mocha \"test/**/*_spec.js\""
     },
     "node-red": {
     	"version": ">=1.0.0",

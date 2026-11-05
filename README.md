@@ -84,5 +84,22 @@ Usage with a heat/cool process
 If the process has both heating and cooling devices then it is necessary to split the output of node-red-contrib-pid to provide a heat output and a cool output. There is a sample flow that demonstrates this at https://flows.nodered.org/flow/4271d6617c89544ad318e7ab17211ba0  This allows for independent adjustment of heat/cool gain and also for heat/cool overlap if required. 
 
 
+Tests
+-----
+
+The tests use [mocha] and the Node-RED [test helper], which loads the node into a
+real Node-RED runtime. Install the development dependencies and run them with:
+
+    npm install
+    npm test
+
+The test helper requires Node-RED itself as a development dependency, so running
+the tests needs a newer nodejs than the node does at runtime: Node-RED 4 requires
+nodejs 18.5 or later.
+
+[mocha]: https://mochajs.org/
+[test helper]: https://github.com/node-red/node-red-node-test-helper
+
+
 [Node-RED]:  http://nodered.org/
 
