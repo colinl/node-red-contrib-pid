@@ -44,6 +44,8 @@ Configuration
 
   * **Initial integral** - This is an initial value which is used to preset the integrated error value when the flow is deployed in order to assist in homing in on the setpoint the first time. It should be set to an estimate of what the power requirement might be in order to maintain the process at the setpoint. For example for a domestic room heating application it might be set to 0.2 indicating that 20% of the available power might be required to maintain the setpoint.  The value is of no consequence apart from on deployment of the flow. It may be setup either in the configuration of the node or by passing the node a message with **msg.topic** set to `integral_default` and **msg.payload** set to the required value. Note that if the property is set via a message then this must be done either before or with the very first process value.
 
+  * **Integral** - The integrated error value may be set directly at any time by passing the node a message with **msg.topic** set to `integral` and **msg.payload** set to the required value, or by passing the value in **msg.integral**. The value is in the same units as the integral reported in the output message, so a value taken from the output can be fed back in unchanged. It is clamped to +/-(proportional band)/2 so that it cannot push the zero power point outside the proportional band. If set before the first process value is received then it takes the place of the **Initial integral** setting. This may be used to restore the integral after a restart, or to discard the accumulated history when an external event means it is no longer meaningful.
+
   * **Max sample interval** - This is the maximum time in seconds that is expected between samples. It is provided to cope with unusual situations such as a faulty sensor that might prevent the node from being supplied with a process value and to prevent the problem of integral wind-up during that time. Each time a process value is received a check is made on the time since the last sample and if too long has elapsed the integral error term is locked at the previous value and the derivative component is set to zero. It may be setup either in the configuration of the node or by passing the node a message with **msg.topic** set to `max_interval` and **msg.payload** set to the required integer value.
 
   * **Derivative smoothing factor** - In situations where the process sensor has limited resolution (such as the DS18B20), the use of deriviative can be problematic as when the process is changing only slowly the steps in the value cause spikes in the derivative. To reduce the effect of these this parameter can be set to apply a filter to the derivative term.  I have found that with the DS18B20 that a value of 3 here can be beneficial, providing effectively a low pass filter on the derivative at 1/3 of the derivative time. This feature may also be useful if the process value is particularly noisy. The smaller the value the greater the filtering effect but the more it will reduce the effectiveness of the derivative. A value of zero disables this feature. It may be setup either in the configuration of the node or by passing the node a message with **msg.topic** set to `smooth_factor` and **msg.payload** set to the required value.
@@ -67,7 +69,7 @@ The status text will normally be empty. In unusual conditions it will show the f
   
 Persistence
 -----------
-In order to reduce the impact of restarts or redeploys, you can save the integral value in a persistent storage location and feed it back in to the node as it starts. The integral value is available in `msg.integral` in the output messages. In order to feed it back in set the `integral_default` value to `0.5 -(cached_integral/prop_band)` before the first process value is passed in.
+In order to reduce the impact of restarts or redeploys, you can save the integral value in a persistent storage location and feed it back in to the node as it starts. The integral value is available in `msg.integral` in the output messages. The simplest way to feed it back in is to pass it to the node in `msg.integral`, or with `msg.topic` set to `integral`, which takes the value unchanged. Alternatively the `integral_default` value may be set to `0.5 -(cached_integral/prop_band)` before the first process value is passed in.
   
 Usage with a cooling process
 ----------------------------
@@ -80,6 +82,23 @@ Usage with a heat/cool process
 ------------------------------
 
 If the process has both heating and cooling devices then it is necessary to split the output of node-red-contrib-pid to provide a heat output and a cool output. There is a sample flow that demonstrates this at https://flows.nodered.org/flow/4271d6617c89544ad318e7ab17211ba0  This allows for independent adjustment of heat/cool gain and also for heat/cool overlap if required. 
+
+
+Tests
+-----
+
+The tests use [mocha] and the Node-RED [test helper], which loads the node into a
+real Node-RED runtime. Install the development dependencies and run them with:
+
+    npm install
+    npm test
+
+The test helper requires Node-RED itself as a development dependency, so running
+the tests needs a newer nodejs than the node does at runtime: Node-RED 4 requires
+nodejs 18.5 or later.
+
+[mocha]: https://mochajs.org/
+[test helper]: https://github.com/node-red/node-red-node-test-helper
 
 
 [Node-RED]:  http://nodered.org/
