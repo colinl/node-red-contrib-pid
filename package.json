@@ -14,6 +14,9 @@
         "node": ">=8.0.0"
     },
     "keywords": [ "PID", "node-red" ],
+    "scripts": {
+        "test": "node test/pid_spec.js"
+    },
     "node-red": {
     	"version": ">=1.0.0",
         "nodes": {

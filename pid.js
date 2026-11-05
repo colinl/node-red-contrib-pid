@@ -26,6 +26,7 @@ module.exports = function(RED) {
     node.t_integral = Number(config.ti);
     node.t_derivative = Number(config.td);
     node.integral_default = Number(config.integral_default);
+    node.integral_preset = false;   // set true when the integral is provided in a message
     node.smooth_factor = Number(config.smooth_factor);
     node.max_interval = Number(config.max_interval);
     node.disabled_op = Number(config.disabled_op);
@@ -133,7 +134,7 @@ module.exports = function(RED) {
       if (isNaN(value)) {
         return;
       }
-      var pbo2 = node.prop_band/2.0;
+      const pbo2 = node.prop_band/2.0;
       if (value >  pbo2) value =  pbo2;
       if (value < -pbo2) value = -pbo2;
       node.integral = value;
