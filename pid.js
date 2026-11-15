@@ -19,7 +19,7 @@ module.exports = function(RED) {
   
   function PID(config) {
     RED.nodes.createNode(this,config);
-    var node = this;
+    let node = this;
     node.setpoint = Number(config.setpoint);
     node.enable = Number(config.enable);
     node.prop_band = Number(config.pb);
@@ -36,7 +36,7 @@ module.exports = function(RED) {
     }
     
     this.on('input', function(msg) {
-      var newMsg = null;
+      let newMsg = null;
       
       // Using msg.* to change specific PID property.
       if (msg.hasOwnProperty('setpoint')) {
@@ -76,7 +76,7 @@ module.exports = function(RED) {
       if (msg.topic == 'setpoint') {
         node.setpoint = Number(msg.payload);
       } else if (msg.topic == 'enable') {
-        var wasEnabled = node.enable;
+        const wasEnabled = node.enable;
         node.enable = Number(msg.payload);
         // if now enabled just clear the status, can't do more until a pv sample is received
         if (node.enable  &&  !wasEnabled) {
@@ -144,17 +144,19 @@ module.exports = function(RED) {
     function runControlLoop() {
       //node.log("pv, setpoint, prop_band, t_integral, t_derivative, integral_default, smooth_factor, max_interval, enable, disabled_op");
       //node.log(node.pv + " " + node.setpoint + " " + node.prop_band + " " + node.t_integral + " " + node.t_derivative + " " + node.integral_default + " " + node.smooth_factor + " " + node.max_interval + " " + node.enable + " " + node.disabled_op);
-      var ans;
+      let ans;
+      let power
+      let proportional
       node.status({});
       // check we have a good pv value
       if (!isNaN(node.pv) && isFinite(node.pv)) {
         // even if we are disabled (enable == 0 or false) then run through the calcs to keep the derivative up to date
         // but lock the integral and set power to appropriate value at the end
-        var time = Date.now();
-        var integral_locked = false;
-        var factor;
+        const time = Date.now();
+        let integral_locked = false;
+        let factor;
         if (node.last_sample_time) {
-          var delta_t = (time - node.last_sample_time)/1000;  // seconds
+          const delta_t = (time - node.last_sample_time)/1000;  // seconds
           if (delta_t <= 0 || delta_t > node.max_interval) {
             // too long since last sample so leave integral as is and set deriv to zero
             node.status({fill:"red",shape:"dot",text:"Too long since last sample"});
@@ -163,13 +165,13 @@ module.exports = function(RED) {
             if (node.smooth_factor > 0) {
               // A derivative smoothing factor has been supplied
               // smoothing time constant is td/factor but with a min of delta_t to stop overflows
-              var ts = Math.max(node.t_derivative/node.smooth_factor, delta_t);
+              const ts = Math.max(node.t_derivative/node.smooth_factor, delta_t);
               factor = 1.0/(ts/delta_t);
             } else {
               // no integral smoothing so factor is 1, this makes smoothed_value the previous pv
               factor = 1.0;
             }
-            var delta_v = (node.pv - node.smoothed_value) * factor;
+            const delta_v = (node.pv - node.smoothed_value) * factor;
             node.smoothed_value = node.smoothed_value + delta_v
             //node.log( "factor " + factor.toFixed(3) + " delta_t " + delta_t + " delta_v " + delta_v.toFixed(3) +
             //  " smoothed " + node.smoothed_value.toFixed(3));
@@ -178,8 +180,8 @@ module.exports = function(RED) {
             // lock the integral if abs(previous integral + error) > prop_band/2
             // as this means that P + I is outside the linear region so power will be 0 or full
             // also lock if control is disabled
-            var error = node.pv - node.setpoint;
-            var pbo2 = node.prop_band/2.0;
+            const error = node.pv - node.setpoint;
+            const pbo2 = node.prop_band/2.0;
             if ((Math.abs(error + node.integral) < pbo2)  && node.enable) {
               integral_locked = false;
               if (node.t_integral <= 0) {
@@ -213,7 +215,7 @@ module.exports = function(RED) {
             node.last_power = 0.0;  // power last time through
         }
         
-        var proportional = node.pv - node.setpoint;
+        proportional = node.pv - node.setpoint;
         if (node.prop_band == 0) {
           // prop band is zero so drop back to on/off control with zero hysteresis
           if (proportional > 0) {
@@ -225,7 +227,7 @@ module.exports = function(RED) {
             power = node.last_power;
           }
         } else {
-          var power = -1.0/node.prop_band * (proportional + node.integral + node.derivative) + 0.5;
+          power = -1.0/node.prop_band * (proportional + node.integral + node.derivative) + 0.5;
         }
         // set power to disabled value if the loop is not enabled
         if (!node.enable) {
