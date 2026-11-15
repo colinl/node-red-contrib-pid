@@ -92,8 +92,14 @@
     <p>Any message received with an attribute <b>msg.&lt;property_name&gt;</b> set will change the value of the associated property to the value of that attribute. For example setting <b>msg.setpoint</b> will change the setpoint. Multiple properties can be changed in the same message using this method. Note that messages of this type should still have the process value in <b>msg.payload</b></p>
     
     <p>Any other message properties will be passed through unchanged.</p>
+
+    <p><b>Example and Tuning Guide</b><p>
+
+    <p>A sample flow demonstrating usage is available at <a href="http://flows.nodered.org/flow/42f125b56a00dd5d1433c2f8023263e9">http://flows.nodered.org/flow/42f125b56a00dd5d1433c2f8023263e9</a></p>
+
+    <p>A tuning guide that walks through a simple tuning procedure using the above flow is available at <a href="http://blog.clanlaw.org.uk/pid-loop-tuning.html">http://blog.clanlaw.org.uk/pid-loop-tuning.html</a></p>
     
-    <p>The configuration parameters are as follows:</p>
+    <p><b>Configuration Parameters</b></p>
     <ul>
     
       <li><b>Setpoint</b> - This is the process value that the process is aiming for. It may be setup either in the configuration of the node, by passing the node a message with <b>msg.topic</b> set to <code>setpoint</code> and <b>msg.payload</b> set to the required floating point value, or by passing the value in <b>msg.setpoint</b>.</li>
