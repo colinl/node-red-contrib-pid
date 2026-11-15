@@ -1,3 +1,5 @@
+- Unreleased
+    - Adds the ability to set the integral term directly at runtime via `msg.topic` set to `integral` or via `msg.integral`.
 - 2.0.0 (2023-10-07) 
     - Preserves additional attributes in incoming messages.  In unusual cases this could be a **breaking change**. Fixes [#23](https://github.com/colinl/node-red-contrib-pid/issues/23).
     - Adds minimum node-red and nodejs versions to package.json.
